@@ -20,7 +20,7 @@ class Book {
         String numPages = "Number of pages: " + this.numPages + "\n";
         return name + author + price + numPages;
     }
-}
+}  
 
 public class Main {
 
