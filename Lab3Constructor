@@ -14,11 +14,11 @@ class Book {
     }
 
     public String toString() {
-        String bookDetails = "Book name: " + this.name + "\n"
-                + "Author name: " + this.author + "\n"
-                + "Price: " + this.price + "\n"
-                + "Number of pages: " + this.numPages + "\n";
-        return bookDetails;
+        String name = "Book name: " + this.name + "\n";
+        String author = "Author name: " + this.author + "\n";
+        String price = "Price: " + this.price + "\n";
+        String numPages = "Number of pages: " + this.numPages + "\n";
+        return name + author + price + numPages;
     }
 }
 
