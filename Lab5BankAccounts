@@ -1,0 +1,160 @@
+import java.util.Scanner;
+
+class Account {
+    String customerName;
+    String accountNumber;
+    String accountType;
+    double balance;
+
+    Account(String customerName, String accountNumber, String accountType, double balance) {
+        this.customerName = customerName;
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+        this.balance = balance;
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposit successful. Updated balance: " + balance);
+    }
+
+    void displayBalance() {
+        System.out.println("Account Type: " + accountType);
+        System.out.println("Customer Name: " + customerName);
+        System.out.println("Account Number: " + accountNumber);
+        System.out.println("Balance: " + balance);
+    }
+}
+
+class SavAcct extends Account {
+    SavAcct(String customerName, String accountNumber, double balance) {
+        super(customerName, accountNumber, "Savings", balance);
+    }
+
+    void computeInterest(double interestRate) {
+        double interest = balance * interestRate;
+        deposit(interest);
+        System.out.println("Interest computed and deposited. Updated balance: " + balance);
+    }
+
+    void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawal successful. Updated balance: " + balance);
+        } else {
+            System.out.println("Insufficient funds. Withdrawal failed.");
+        }
+    }
+}
+class CurAcct extends Account {
+    double minBalance;
+    double serviceCharge;
+
+    CurAcct(String customerName, String accountNumber, double balance, double minBalance, double serviceCharge) {
+        super(customerName, accountNumber, "Current", balance);
+        this.minBalance = minBalance;
+        this.serviceCharge = serviceCharge;
+    }
+
+    void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawal successful. Updated balance: " + balance);
+        } else {
+            System.out.println("Insufficient funds. Withdrawal failed.");
+        }
+    }
+
+   
+}
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter customer name: ");
+        String customerName = scanner.nextLine();
+        System.out.print("Enter account number: ");
+        String accountNumber = scanner.nextLine();
+        System.out.print("Enter initial balance: ");
+        double initialBalance = scanner.nextDouble();
+
+        SavAcct savingsAccount = new SavAcct(customerName, accountNumber, initialBalance);
+        CurAcct currentAccount = new CurAcct(customerName, accountNumber, initialBalance, 1000, 50);
+
+        int choice;
+        double amount;
+        double interestRate = 0.05;
+
+        do {
+            System.out.println("\nMenu:");
+            System.out.println("1. Deposit");
+            System.out.println("2. Display Balance");
+            System.out.println("3. Compute Interest (Savings Account)");
+            System.out.println("4. Withdraw");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+switch (choice) {
+                case 1:
+                    System.out.print("Enter the amount to deposit: ");
+                    amount = scanner.nextDouble();
+                    System.out.print("Choose account type (1. Savings / 2. Current): ");
+                    int accountTypeChoice = scanner.nextInt();
+                    switch (accountTypeChoice) {
+                        case 1:
+                            savingsAccount.deposit(amount);
+                            break;
+                        case 2:
+                            currentAccount.deposit(amount);
+                            break;
+                        default:
+                            System.out.println("Invalid account type choice.");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Choose account type (1. Savings / 2. Current): ");
+                    int displayChoice = scanner.nextInt();
+                    switch (displayChoice) {
+                        case 1:
+                            savingsAccount.displayBalance();
+                            break;
+                        case 2:
+                            currentAccount.displayBalance();
+                            break;
+                        default:
+                            System.out.println("Invalid account type choice.");
+                    }
+                    break;
+                case 3:
+                    System.out.print("Enter the interest rate: ");
+                    interestRate = scanner.nextDouble();
+                    savingsAccount.computeInterest(interestRate);
+                    break;
+                case 4:
+                    System.out.print("Enter the amount to withdraw: ");
+                    amount = scanner.nextDouble();
+                    System.out.print("Choose account type (1. Savings / 2. Current): ");
+                    int withdrawChoice = scanner.nextInt();
+                    switch (withdrawChoice) {
+                        case 1:
+                            savingsAccount.withdraw(amount);
+                            break;
+                        case 2:
+                            currentAccount.withdraw(amount);
+                            break;
+                        default:
+                            System.out.println("Invalid account type choice.");
+                    }
+                    break;
+          
+                case 5:
+                    System.out.println("Exiting the program...");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        } while (choice != 5);
+
+        scanner.close();
+    }
+}
